@@ -58,11 +58,6 @@ router.post('/:id/reviews', (req, res) => {
     }
 });
 
-router.get('/tmdb/upcoming/:page', asyncHandler( async(req, res) => {
-    const upcomingMovies = await getUpcomingMovies();
-    res.status(200).json(upcomingMovies);
-}));
-
 router.get('/upcoming/:page', asyncHandler( async(req, res) => {
     const page = parseInt(req.params.page);
     //console.log(page);

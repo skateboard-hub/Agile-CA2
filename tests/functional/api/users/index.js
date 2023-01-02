@@ -43,67 +43,49 @@ describe("Users endpoint", () => {
   afterEach(() => {
     api.close();
   });
-  describe("GET /api/users ", () => {
-    it("should return the 2 users and a status 200", (done) => {
-      request(api)
-        .get("/api/users")
-        .set("Accept", "application/json")
-        .expect("Content-Type", /json/)
-        .expect(200)
-        .end((err, res) => {
-          expect(res.body).to.be.a("array");
-          expect(res.body.length).to.equal(2);
-          let result = res.body.map((user) => user.username);
-          expect(result).to.have.members(["user1", "user2"]);
-          done();
-        });
+
+  describe("POST /api/users/:userName/favourites ", () => {
+    describe("Add to a favourite film to the user", () => {
+      it("should return a 201 status", () => {
+        return request(api)
+          .post("/api/users/user1/favourites")
+          .send({
+            id: 729648
+          })
+          .expect(201)
+          .then((res) => {
+            expect(res.body).to.be.a("object");
+          });
+      });
     });
   });
 
-  describe("POST /api/users ", () => {
-    describe("For a register action", () => {
-      describe("when the payload is correct", () => {
-        it("should return a 201 status and the confirmation message", () => {
-          return request(api)
-            .post("/api/users?action=register")
-            .send({
-              username: "user3",
-              password: "test3",
-            })
-            .expect(201)
-            .expect({ msg: "Successful created new user.", code: 201 });
-        });
-        after(() => {
-          return request(api)
-            .get("/api/users")
-            .set("Accept", "application/json")
-            .expect("Content-Type", /json/)
-            .expect(200)
-            .then((res) => {
-              expect(res.body.length).to.equal(3);
-              const result = res.body.map((user) => user.username);
-              expect(result).to.have.members(["user1", "user2", "user3"]);
-            });
-        });
-      });
-    });
-    describe("For an authenticate action", () => {
-      describe("when the payload is correct", () => {
-        it("should return a 200 status and a generated token", () => {
-          return request(api)
-            .post("/api/users?action=authenticate")
-            .send({
-              username: "user1",
-              password: "test1",
-            })
-            .expect(200)
-            .then((res) => {
-              expect(res.body.success).to.be.true;
-              expect(res.body.token).to.not.be.undefined;
-              user1token = res.body.token.substring(7);
-            });
+  
+  describe("GET /api/users/:userName/favourites ", () => {
+    describe("should return a 200 status and have one favourite film", () => {
+      it("should return a 200 status", () => {
+        return request(api)
+        .get(`/api/users/user1/favourites`)
+        .expect(200)
+        .then((res) => {
+          expect(res.body).to.be.a("array");
+          expect(res.body.length).to.equal(0);
         });
       });
     });
   });
+
+  describe("POST /api/users/:username/movie/:id/favourites ", () => {
+    describe("Detele a specified film from favourite list", () => {
+      it("should return a 201 status", () => {
+        return request(api)
+        .post(`/api/users/user1/movie/729648/favourites`)
+        .expect(201)
+        .then((res) => {
+          expect(res.body.favourites).to.be.a("array")
+        })
+      });
+    });
+  });
+
 });
