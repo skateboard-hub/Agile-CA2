@@ -4,9 +4,17 @@ const mongoose = require("mongoose");
 import Movie from "../../../../api/movies/movieModel";
 import api from "../../../../index";
 import movies from "../../../../seedData/movies";
+import { movieReviews } from '../../../../api/movies/moviesData'
+
+let seedData = {
+  movieReviews : []
+} 
+movieReviews.results.forEach(review => seedData.movieReviews.push(review) )
 
 const expect = chai.expect;
 let db;
+let movie;
+let numReviews;
 
 describe("Movies endpoint", () => {
   before(() => {
@@ -15,6 +23,11 @@ describe("Movies endpoint", () => {
       useUnifiedTopology: true,
     });
     db = mongoose.connection;
+    while (movieReviews.results.length > 0) {
+      movieReviews.results.pop()
+   }
+   // Repopulate datastore
+   seedData.movieReviews.forEach(review => movieReviews.results.push(review)  )
   });
 
   after(async () => {
