@@ -8,6 +8,7 @@ const expect = chai.expect;
 let db;
 let user1token;
 
+//Users
 describe("Users endpoint", () => {
   before(() => {
     mongoose.connect(process.env.MONGO_DB, {
