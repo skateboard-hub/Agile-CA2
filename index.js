@@ -27,7 +27,8 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(passport.initialize());
 
-app.use('/api/movies',  moviesRouter);
+//app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
+app.use('/api/movies', moviesRouter);
 app.use('/api/genres', genresRouter);
 app.use('/api/users', usersRouter);
 app.use('/api/peoples', peopleRouter);
@@ -35,7 +36,8 @@ app.use(errHandler);
 
 
 
-app.listen(port, () => {
+let server = app.listen(port, () => {
   console.info(`Server running at ${port}`);
 });
 
+module.exports = server
