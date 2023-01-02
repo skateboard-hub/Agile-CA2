@@ -3,6 +3,8 @@ import request from "supertest";
 const mongoose = require("mongoose");
 import User from "../../../../api/users/userModel";
 import api from "../../../../index";
+import Movie from "../../../../api/movies/movieModel";
+import movies from "../../../../seedData/movies";
 
 const expect = chai.expect;
 let db;
@@ -27,6 +29,8 @@ describe("Users endpoint", () => {
   });
   beforeEach(async () => {
     try {
+      await Movie.deleteMany();
+      await Movie.collection.insertMany(movies);
       await User.deleteMany();
       // Register two users
       await request(api).post("/api/users?action=register").send({
