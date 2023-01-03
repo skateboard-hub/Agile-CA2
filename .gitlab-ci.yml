@@ -69,8 +69,8 @@ ContinuousDelivery:
     - dpl --provider=heroku --app=$HEROKU_APP_NAME_STAGING --api-key=$HEROKU_API_KEY
     - echo "Deployed to production manually"
   environment:
-    - name: production
-    - url: https://movies-api-production-sx.herokuapp.com/
+    name: production
+    url: https://movies-api-production-sx.herokuapp.com/
   when:
    manual
 
@@ -87,5 +87,5 @@ ContinuousDeployment:
     - dpl --provider=heroku --app=$HEROKU_APP_NAME_STAGING --api-key=$HEROKU_API_KEY
     - echo "Deployed to production manually"
   environment:
-    - name: production
-    - url: https://movies-api-production-sx.herokuapp.com/
+    name: production
+    url: https://movies-api-production-sx.herokuapp.com/
