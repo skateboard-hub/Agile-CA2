@@ -56,7 +56,7 @@ deploy_staging:
     - echo "Deployed to staging server"
   
 
-ContinuousDeliveryInDevelop:
+ContinuousDelivery:
   image: ruby:latest
   only:
     - develop
@@ -74,7 +74,7 @@ ContinuousDeliveryInDevelop:
   when:
    manual
 
- ContinuousDeploymentInMain
+ContinuousDeployment:
   image: ruby:latest
   only:
     - main
