@@ -8,6 +8,7 @@ import usersRouter from './api/users';
 import peopleRouter from './api/peoples';
 import passport from './authenticate';
 import loglevel from 'loglevel';
+import moviesAuthenticateRouter from './api/movies/tmdb';
 
 
 if (process.env.NODE_ENV === 'test') {
@@ -35,6 +36,7 @@ app.use(express.json());
 app.use(passport.initialize());
 
 //app.use('/api/movies', passport.authenticate('jwt', {session: false}), moviesRouter);
+app.use('/api/movies/tmdb', passport.authenticate('jwt', { session: false }), moviesAuthenticateRouter);
 app.use('/api/movies', moviesRouter);
 app.use('/api/genres', genresRouter);
 app.use('/api/users', usersRouter);

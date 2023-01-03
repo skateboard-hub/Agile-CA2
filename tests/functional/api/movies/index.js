@@ -5,6 +5,7 @@ import Movie from "../../../../api/movies/movieModel";
 import api from "../../../../index";
 import movies from "../../../../seedData/movies";
 import { movieReviews } from '../../../../api/movies/moviesData'
+import User from "../../../../api/movies/movieModel";
 
 let seedData = {
   movieReviews : []
@@ -15,6 +16,7 @@ const expect = chai.expect;
 let db;
 let movie;
 let numReviews;
+let token;
 
 describe("Movies endpoint", () => {
   before(() => {
@@ -42,6 +44,12 @@ describe("Movies endpoint", () => {
     try {
       await Movie.deleteMany();
       await Movie.collection.insertMany(movies);
+      await User.deleteMany();
+      // Register a user
+      await request(api).post("/api/users?action=register").send({
+        username: "user1",
+        password: "test1",
+      });
     } catch (err) {
       console.error(`failed to Load user Data: ${err}`);
     }
@@ -104,8 +112,8 @@ describe("Movies endpoint", () => {
     describe("when the page is invalid", () => {
       it("should return the NOT found message", () => {
         return request(api)
-          .get("/api/movies/upcoming/9999")
-          .expect(500)
+          .get("/api/movies/upcoming/9999999")
+          .expect(404)
           
       });
     });
@@ -127,11 +135,44 @@ describe("Movies endpoint", () => {
     describe("when the page is invalid", () => {
       it("should return the NOT found message", () => {
         return request(api)
-          .get("/api/movies/topRated/9999")
-          .expect(500)
+          .get("/api/movies/topRated/99999999")
+          .expect(404)
           
       });
     });
   });
+
+  describe("GET /api/movies/tmdb/movie/:id", () => {
+    describe("when the user is authenticated", () => {
+      before(() => {
+        token = "BEARER eyJhbGciOiJIUzI1NiJ9.dXNlcjE.FmYria8wq0aFDHnzYWhKQrhF5BkJbFNN1PqNyNQ7V4M"
+      })
+      describe("when the id is valid number", () => {
+        it("should return an object of the movie's details in tmdb and status 200", () => {
+          return request(api)
+            .get(`/api/movies/tmdb/movie/${movies[0].id}`)
+            .set("Authorization", token)
+            .expect(200)
+            .then((res) => {
+              expect(res.body).to.have.property("id", movies[0].id);
+              expect(res.body).to.have.property("title", movies[0].title);
+            });
+        });
+      });
+    });
+    describe("when the user is not authenticated", () => {
+      before(() => {
+        token = "123"
+      })
+      it("should return a status 401 and Unauthorized message", () => {
+        return request(api)
+          .get(`/api/movies/tmdb/movie/${movies[0].id}`)
+          .set("Authorization", token)
+          .expect(401)
+          .expect("Unauthorized");
+      });
+    });
+  });
+
 
 });
