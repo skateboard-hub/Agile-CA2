@@ -82,7 +82,7 @@ router.get('/upcoming/:page', asyncHandler(async (req, res) => {
         }
     }
     else {
-        res.status(404).json({ message: 'Invalid page form.', status_code: 404 })
+        res.status(404).json({ message: 'Invalid page.', status_code: 404 })
     }
 }));
 
@@ -97,7 +97,7 @@ router.get('/topRated/:page', asyncHandler(async (req, res) => {
         }
     }
     else {
-        res.status(404).json({ message: 'Invalid page form.', status_code: 404 })
+        res.status(404).json({ message: 'Invalid page.', status_code: 404 })
     }
 }));
 

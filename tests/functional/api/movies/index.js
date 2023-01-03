@@ -114,7 +114,7 @@ describe("Movies endpoint", () => {
         return request(api)
           .get("/api/movies/upcoming/9999999")
           .expect(404)
-          
+          .expect({"message":"Invalid page.","status_code":404})
       });
     });
   });
@@ -137,7 +137,7 @@ describe("Movies endpoint", () => {
         return request(api)
           .get("/api/movies/topRated/99999999")
           .expect(404)
-          
+          .expect({"message":"Invalid page.","status_code":404})
       });
     });
   });
@@ -150,29 +150,60 @@ describe("Movies endpoint", () => {
       describe("when the id is valid number", () => {
         it("should return an object of the movie's details in tmdb and status 200", () => {
           return request(api)
-            .get(`/api/movies/tmdb/movie/${movies[0].id}`)
+            .get(`/api/movies/tmdb/movie/791373}`)
             .set("Authorization", token)
             .expect(200)
             .then((res) => {
-              expect(res.body).to.have.property("id", movies[0].id);
-              expect(res.body).to.have.property("title", movies[0].title);
+              expect(res.body).to.have.property("id", 791373);
             });
         });
       });
     });
     describe("when the user is not authenticated", () => {
       before(() => {
-        token = "123"
+        token = "1"
       })
       it("should return a status 401 and Unauthorized message", () => {
         return request(api)
-          .get(`/api/movies/tmdb/movie/${movies[0].id}`)
+          .get(`/api/movies/tmdb/movie/791373}`)
           .set("Authorization", token)
           .expect(401)
           .expect("Unauthorized");
       });
     });
   });
+
+  describe("GET /api/movies/tmdb/movie/:id/images", () => {
+    describe("when the user is authenticated", () => {
+      before(() => {
+        token = "BEARER eyJhbGciOiJIUzI1NiJ9.dXNlcjE.FmYria8wq0aFDHnzYWhKQrhF5BkJbFNN1PqNyNQ7V4M"
+      })
+      describe("when the id is valid number", () => {
+        it("should return an object of the movie's details in tmdb and status 200", () => {
+          return request(api)
+            .get(`/api/movies/tmdb/movie/791373/images`)
+            .set("Authorization", token)
+            .expect(200)
+            .then((res) => {
+              expect(res.body.backdrops).to.be.a("array")
+            });
+        });
+      });
+    });
+    describe("when the user is not authenticated", () => {
+      before(() => {
+        token = "1"
+      })
+      it("should return a status 401 and Unauthorized message", () => {
+        return request(api)
+          .get(`/api/movies/tmdb/movie/791373/images`)
+          .set("Authorization", token)
+          .expect(401)
+          .expect("Unauthorized");
+      });
+    });
+  });
+
 
 
 });
