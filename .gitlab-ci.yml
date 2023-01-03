@@ -55,23 +55,6 @@ deploy_staging:
     - dpl --provider=heroku --app=$HEROKU_APP_NAME_STAGING --api-key=$HEROKU_API_KEY
     - echo "Deployed to staging server"
   
-  ContinuousDelivery:
-  image: ruby:latest
-  only:
-    - develop
-  stage: production
-  before_script:
-    - apt-get update -qy
-    - apt-get install -y ruby-dev
-    - gem install dpl
-  script:  
-    - dpl --provider=heroku --app=$HEROKU_APP_NAME_STAGING --api-key=$HEROKU_API_KEY
-    - echo "Deployed to production manually"
-  environment:
-    - name: production
-    - url: https://movies-api-production-sx.herokuapp.com/
-  when:
-   manual
 
 ContinuousDeliveryInDevelop:
   image: ruby:latest
