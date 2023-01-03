@@ -1,4 +1,4 @@
-import { getUpcomingMovies, getTopRatedMovies, getMovie, getMovieImages, getMovieReviews } from "../../tmdb-api";
+import {  getMovie, getMovieImages, getMovieReviews } from "../../tmdb-api";
 import asyncHandler from 'express-async-handler';
 import express from 'express';
 
