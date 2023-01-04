@@ -4,26 +4,26 @@ Name: Shunyi Xu
 ​
 ## API endpoints.
 ​​
-+ GET api/movies - Get all movie genres.
-+ GET api/movies/:id - get the details of a specific movie.
-+ GET api/movies/:id/images
-+ GET api/movies/:id/reviews
-+ POST api/movies/:id/reviews
-+ GET api/movies/upcoimng/:page
-+ GET api/movies/topRated/:page
++ GET api/movies - Get the information for 20 movies from the API
++ GET api/movies/:id - Get the primary information about a movie
++ GET api/movies/:id/images - Get the images that belong to a movie.
++ GET api/movies/:id/reviews - Retrieve the details of a movie or TV show review
++ POST api/movies/:id/reviews - Add a movie review
++ GET api/movies/upcoimng/:page - Get a list of upcoming movies in theatres.
++ GET api/movies/topRated/:page - Get the top rated movies on TMDB.
 
-+ GET api/peoples/popular/|page
-+ GET api/peoples/:id
-+ FET api/peoples?:id/images
++ GET api/peoples/popular/|page - Get a list of the current popular movies on TMDB. 
++ GET api/peoples/:id - Get the primary person details by id.
++ GET api/peoples?:id/images - Get the images for a person.
 
-+ GET api/genres
++ GET api/genres - Get the list of official genres for movies.
 
-+ GET api/users
-+ POST api/users
-+ PUT api/users/:id
-+ GET api/users/:username/favourites
-+ POST api/users/:username/favourites
-+ /api/users/:username/movies/:id/favourites
++ GET api/users - Get find all the users for the App.
++ POST api/users - Authenticate the identity of user
++ PUT api/users/:id - Update the user information in the App
++ GET api/users/:username/favourites - Find the the user's the list of favourite movies
++ POST api/users/:username/favourites - Add a movie to the user's favorite movie list
++ /api/users/:username/movies/:id/favourites - Delete a movie from the user's favourite list
 
 ## Test cases.
 ​
